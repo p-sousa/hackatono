@@ -1,0 +1,62 @@
+# Copyright (c) 2023 Sword Health
+#
+# Bloom project manifest T2 topology
+#
+
+
+manifest:
+  remotes:
+    # NRF Connect SDK GitHub organization.
+    # NCS repositories are hosted here.
+    - name: ncs
+      url-base: https://github.com/nrfconnect
+  defaults:
+    remote: ncs
+
+  # Main bloom application
+  self:
+      path: breathe
+
+  projects:
+    # repo containing the sdk
+    - name: nrf
+      repo-path: sdk-nrf
+      revision: v2.5.0
+      path: nrf
+      west-commands: scripts/west-commands.yml
+      
+      # list of tools imported by NCS that we are not using (blocklist)
+      # keeping them here if we require any of them in the future
+      import:
+        name-blocklist:
+          - net-tools
+          - matter
+          - azure-sdk-for-c
+          - TraceRecorderSource
+          - zscilib
+          - uoscore-uedhoc
+          - tf-m-tests
+          - psa-arch-tests
+          - tinycbor
+          - open-amp
+          - mipi-sys-t
+          - loramac-node
+          - lvgl
+          - liblc3
+          - hal_wurthelektronik
+          - libmetal
+          - lz4
+          - cmock
+          - cjson
+          - sdk-hostap
+          - chre
+          - canopennode
+          - openthread
+          - cirrus
+          - memfault-firmware-sdk
+          - littlefs
+          - hal_st
+          - fatfs
+          - edtt
+          - picolibc
+          - trusted-firmware-m
