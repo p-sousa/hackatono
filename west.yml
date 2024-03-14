@@ -24,7 +24,7 @@ manifest:
       revision: v2.5.0
       path: nrf
       west-commands: scripts/west-commands.yml
-      
+
       # list of tools imported by NCS that we are not using (blocklist)
       # keeping them here if we require any of them in the future
       import:
