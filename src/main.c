@@ -21,6 +21,7 @@
 #include <zephyr/bluetooth/services/bas.h>
 #include <zephyr/bluetooth/services/hrs.h>
 #include <zephyr/bluetooth/uuid.h>
+#include <zephyr/drivers/pwm.h>
 
 static const struct bt_data ad[] = {
     BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
@@ -29,6 +30,21 @@ static const struct bt_data ad[] = {
                   BT_UUID_16_ENCODE(BT_UUID_DIS_VAL))};
 
 bool fsr_notification_on = false;
+
+#define STEP PWM_USEC(100)
+
+enum direction {
+  DOWN,
+  UP,
+};
+
+uint32_t min_pulse = PWM_USEC(0);
+
+uint32_t max_pulse = PWM_USEC(4000);
+
+uint32_t pulse_width = PWM_USEC(2000);
+
+static const struct pwm_dt_spec pwm_led0 = PWM_DT_SPEC_GET(DT_ALIAS(pwm_led0));
 
 /**
  * @brief UUID value for the Bloom Pod Force data characteristic
@@ -90,7 +106,19 @@ static ssize_t commands_write_cb(struct bt_conn *conn,
                                  uint8_t flags) {
   ARG_UNUSED(conn);
 
-  printk("Received command: %s\n", (char *)buf);
+  // convert first two bytes of buf to
+  uint16_t pwm_value;
+  memcpy(&pwm_value, buf, 1);
+
+  if (pwm_value >= 10 && pwm_value <= 40) {
+
+    pulse_width = STEP * pwm_value + min_pulse;
+    pwm_set_pulse_dt(&pwm_led0, pulse_width);
+  } else {
+    printk("Invalid PWM value: %d\n", pwm_value);
+  }
+
+  printk("PWM value: %d\n", pwm_value);
 
   return 0;
 }
@@ -187,6 +215,8 @@ static void bas_notify(void) {
 int main(void) {
   int err;
 
+  enum direction dir = UP;
+
   err = bt_enable(NULL);
   if (err) {
     printk("Bluetooth init failed (err %d)\n", err);
@@ -197,18 +227,40 @@ int main(void) {
 
   bt_conn_auth_cb_register(&auth_cb_display);
 
+  if (!pwm_is_ready_dt(&pwm_led0)) {
+    printk("Error: PWM device %s is not ready\n", pwm_led0.dev->name);
+    return 0;
+  }
+
   /* Implement notification. At the moment there is no suitable way
    * of starting delayed work so we do it here
    */
 
-  uint8_t test_pressure = 10;
   while (1) {
-    test_pressure++;
-    k_sleep(K_SECONDS(1));
-    bt_send_fsr_notification(test_pressure);
+    k_sleep(K_MSEC(250));
+
+    // pwm_set_pulse_dt(&pwm_led0, pulse_width);
 
     /* Battery level simulation */
     bas_notify();
+
+    continue;
+
+    if (dir == DOWN) {
+      if (pulse_width <= min_pulse) {
+        dir = UP;
+        pulse_width = min_pulse;
+      } else {
+        pulse_width -= STEP;
+      }
+    } else {
+      pulse_width += STEP;
+
+      if (pulse_width >= max_pulse) {
+        dir = DOWN;
+        pulse_width = max_pulse;
+      }
+    }
   }
   return 0;
 }

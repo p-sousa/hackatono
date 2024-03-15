@@ -1,0 +1,34 @@
+// Copyright (c) 2023 Sword Health
+
+&pinctrl {
+
+    i2c0_default: i2c0_default {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SDA, 0, 3)>,
+                    <NRF_PSEL(TWIM_SCL, 0, 4)>;
+            bias-pull-up;
+        };
+    };
+
+    i2c0_sleep: i2c0_sleep {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SDA, 0, 3)>,
+                    <NRF_PSEL(TWIM_SCL, 0, 4)>;
+            low-power-enable;
+        };
+    };
+
+    	pwm0_default: pwm0_default {
+		group1 {
+			psels = <NRF_PSEL(PWM_OUT0, 0, 17)>;
+			nordic,invert;
+		};
+	};
+
+	pwm0_sleep: pwm0_sleep {
+		group1 {
+			psels = <NRF_PSEL(PWM_OUT0, 0, 17)>;
+			low-power-enable;
+		};
+	};
+  };

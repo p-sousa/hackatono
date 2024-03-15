@@ -1,0 +1,60 @@
+menu "nrf (/home/sousa/hackatono/nrf)"
+osource "/home/sousa/hackatono/nrf/Kconfig.nrf"
+config ZEPHYR_NRF_MODULE
+	bool
+	default y
+endmenu
+menu "wfa-qt-control-app (/home/sousa/hackatono/modules/lib/wfa-qt-control-app)"
+osource "/home/sousa/hackatono/modules/lib/wfa-qt-control-app/zephyr/Kconfig"
+config ZEPHYR_WFA_QT_CONTROL_APP_MODULE
+	bool
+	default y
+endmenu
+menu "mcuboot (/home/sousa/hackatono/bootloader/mcuboot)"
+osource "$(ZEPHYR_MCUBOOT_KCONFIG)"
+config ZEPHYR_MCUBOOT_MODULE
+	bool
+	default y
+endmenu
+menu "mbedtls (/home/sousa/hackatono/modules/crypto/mbedtls)"
+osource "$(ZEPHYR_MBEDTLS_KCONFIG)"
+config ZEPHYR_MBEDTLS_MODULE
+	bool
+	default y
+endmenu
+menu "cmsis (/home/sousa/hackatono/modules/hal/cmsis)"
+osource "$(ZEPHYR_CMSIS_KCONFIG)"
+config ZEPHYR_CMSIS_MODULE
+	bool
+	default y
+endmenu
+menu "hal_nordic (/home/sousa/hackatono/modules/hal/nordic)"
+osource "$(ZEPHYR_HAL_NORDIC_KCONFIG)"
+config ZEPHYR_HAL_NORDIC_MODULE
+	bool
+	default y
+endmenu
+menu "nanopb (/home/sousa/hackatono/modules/lib/nanopb)"
+osource "$(ZEPHYR_NANOPB_KCONFIG)"
+config ZEPHYR_NANOPB_MODULE
+	bool
+	default y
+endmenu
+menu "segger (/home/sousa/hackatono/modules/debug/segger)"
+osource "$(ZEPHYR_SEGGER_KCONFIG)"
+config ZEPHYR_SEGGER_MODULE
+	bool
+	default y
+endmenu
+menu "zcbor (/home/sousa/hackatono/modules/lib/zcbor)"
+osource "$(ZEPHYR_ZCBOR_KCONFIG)"
+config ZEPHYR_ZCBOR_MODULE
+	bool
+	default y
+endmenu
+menu "nrfxlib (/home/sousa/hackatono/nrfxlib)"
+osource "/home/sousa/hackatono/nrfxlib/Kconfig.nrfxlib"
+config ZEPHYR_NRFXLIB_MODULE
+	bool
+	default y
+endmenu
