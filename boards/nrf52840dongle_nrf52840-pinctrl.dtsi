@@ -4,30 +4,30 @@
 
     i2c0_default: i2c0_default {
         group1 {
-            psels = <NRF_PSEL(TWIM_SDA, 0, 15)>,
-                    <NRF_PSEL(TWIM_SCL, 0, 13)>;
+            psels = <NRF_PSEL(TWIM_SDA, 0, 29)>,
+                    <NRF_PSEL(TWIM_SCL, 0, 31)>;
             bias-pull-up;
         };
     };
 
     i2c0_sleep: i2c0_sleep {
         group1 {
-            psels = <NRF_PSEL(TWIM_SDA, 0, 15)>,
-                    <NRF_PSEL(TWIM_SCL, 0, 13)>;
+            psels = <NRF_PSEL(TWIM_SDA, 0, 29)>,
+                    <NRF_PSEL(TWIM_SCL, 0, 31)>;
             low-power-enable;
         };
     };
 
     	pwm0_default: pwm0_default {
 		group1 {
-			psels = <NRF_PSEL(PWM_OUT0, 0, 31)>;
+			psels = <NRF_PSEL(PWM_OUT0, 0, 2)>;
 			nordic,invert;
 		};
 	};
 
 	pwm0_sleep: pwm0_sleep {
 		group1 {
-			psels = <NRF_PSEL(PWM_OUT0, 0, 31)>;
+			psels = <NRF_PSEL(PWM_OUT0, 0, 2)>;
 			low-power-enable;
 		};
 	};

@@ -152,15 +152,15 @@ struct force_sensor_data {
   uint32_t fsr;
 };
 
-int bt_send_fsr_notification(uint32_t fsr) {
+int bt_send_fsr_notification(int32_t fsr) {
   int err = 0;
-  if (fsr_notification_on == false) {
-    return err;
-  }
+  static int32_t value = 40;
+
+  value = fsr;
 
   // Send the encoded message
-  err = bt_gatt_notify(NULL, &primary_svc_pod_sensors.attrs[2], &fsr,
-                       sizeof(struct force_sensor_data));
+  err = bt_gatt_notify(NULL, &primary_svc_pod_sensors.attrs[2], &value,
+                       sizeof(int32_t));
 
   return err;
 }

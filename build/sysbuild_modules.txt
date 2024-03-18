@@ -1,1 +1,0 @@
-"nrf":"/home/sousa/hackatono/nrf":"/home/sousa/hackatono/nrf/sysbuild"

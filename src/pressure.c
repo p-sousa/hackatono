@@ -13,6 +13,11 @@
 
 struct i2c_dt_spec i2c = I2C_DT_SPEC_GET(DT_NODELABEL(pressure_sensor));
 
+enum direction {
+  DOWN,
+  UP,
+};
+
 void temp_thread(void) {
   uint8_t sensor_data[3];
 
@@ -22,13 +27,26 @@ void temp_thread(void) {
   }
 
   int16_t pressure;
-
+  // bool direction = UP;
   while (1) {
+
+    //   if (pressure > 8000) {
+    //     direction = DOWN;
+    //   } else if (pressure < -8000) {
+    //     direction = UP;
+    //   }
+
+    //   if (direction == UP) {
+    //     pressure += 100;
+    //   } else {
+    //     pressure -= 100;
+    //   }
+
     // read from the sensor
-    k_sleep(K_MSEC(250));
+    k_sleep(K_MSEC(10));
 
     i2c_read_dt(&i2c, sensor_data, sizeof(sensor_data));
-    pressure = (sensor_data[0] << 8) | sensor_data[1];
+    pressure = (((sensor_data[0] << 8) | sensor_data[1]) - 8192) * -3;
     bt_send_fsr_notification(pressure);
 
     printk("Pressure: %d\n", pressure);
